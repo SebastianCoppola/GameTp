@@ -1,4 +1,4 @@
-package Entitys;
+package Clases;
 
 public abstract class Personaje {
     
