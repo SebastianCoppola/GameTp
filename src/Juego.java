@@ -1,3 +1,5 @@
+import Clases.Mision;
+import Clases.MisionIntermedia;
 import java.util.Scanner;
 
 public class Juego {
@@ -32,7 +34,8 @@ public class Juego {
     }
     
     private static void iniciar() {
-        System.out.println("Juego iniciado");
+        Mision mision = new MisionIntermedia(1);
+        mision.iniciar();
     }
     
     private static void guardarEstado() {
