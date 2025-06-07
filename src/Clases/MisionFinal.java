@@ -8,78 +8,90 @@ public class MisionFinal extends Mision {
     Scanner scanner = new Scanner(System.in);
     Random random = new Random();
     Snake snake = new Snake(new Posicion(0, 0));
-    MetalGear metalGear = new MetalGear(new Posicion(0, 0));
+    MetalGear rex = new MetalGear(new Posicion(0, 0));
 
     @Override
     public void iniciar() {
-        System.out.println("\n¡Comienza la batalla final entre Snake y MetalGear!");
+        int ultimoDanioRecibido = 0;
+        boolean opcionValida;
 
-        while (snake.estaVivo() && metalGear.estaVivo()) {
-            // Turno de Snake
-            System.out.println("\nHP Snake: " + snake.getHp() + " | HP MetalGear: " + metalGear.getHp());
-            System.out.println("\nEs tu turno, ¿qué acción querés realizar?");
-            System.out.println("1. Disparar (20 de daño)");
-            System.out.println("2. Esquivar próximo ataque");
-            System.out.print("Tu elección: ");
+        System.out.println("\n¡Comienza la batalla final entre Snake y Metal Gear REX!");
 
-            int opcion = scanner.nextInt();
-            boolean esquivar = false;
+        while (snake.estaVivo() && rex.estaVivo()) {
+            do {
+                // Turno de Snake
+                System.out.println("\nHP Snake: " + snake.getHp() + " | HP Metal Gear REX: " + rex.getHp());
+                System.out.println("\nEs tu turno, ¿qué acción querés realizar?");
+                System.out.println("1. Disparar misil (daño aleatorio entre 10 y 30)");
+                System.out.println("2. Esquivar ataque (reduce daño recibido entre 50% y 100%)");
+                System.out.print("Tu elección: ");
 
-            switch (opcion) {
-                case 1:
-                    System.out.println("💥 Snake dispara a MetalGear");
-                    metalGear.recibirDanio(20);
-                    break;
-                case 2:
-                    System.out.println("🕹️ Snake esquivará el próximo ataque de MetalGear");
-                    esquivar = true;
-                    break;
-                default:
-                    System.out.println("❌ Opción inválida. Pierdes el turno.");
-                    break;
-            }
+                int opcion = scanner.nextInt();
 
-            System.out.println("\nHP Snake: " + snake.getHp() + " | HP MetalGear: " + metalGear.getHp());
-            if (!metalGear.estaVivo()) {
+                switch (opcion) {
+                    case 1:
+                        int danioMisil = random.nextInt(21) + 10;
+                        rex.recibirDanio(danioMisil);
+                        System.out.println("💥 Snake dispara un misil causando " + danioMisil + " de daño a Metal Gear REX!");
+                        opcionValida = true;
+                        break;
+                    case 2:
+                        if (ultimoDanioRecibido > 0) {
+                            int porcentaje = random.nextInt(51) + 50;
+                            int vidaRecuperada = ultimoDanioRecibido * porcentaje / 100;
+                            int nuevaHp = Math.min(snake.getHp() + vidaRecuperada, 100);
+                            System.out.println("🛡️ Snake esquiva el " + porcentaje + "% del ataque recibido anteriormente (" + vidaRecuperada + "HP de vida recuperada).");
+                            snake.setHp(nuevaHp);
+                            opcionValida = true;
+                            break;
+                        } else {
+                            System.out.println("⚠️ Snake aún no ha sido atacado. No puede esquivar un ataque que no se ejecuto.");
+                            opcionValida = false;
+                            break;
+                        }
+                    default:
+                        System.out.println("❌ Opción inválida, intenta nuevamente.");
+                        opcionValida = false;
+                        break;
+                }
+            } while (!opcionValida);
+
+            System.out.println("\nHP Snake: " + snake.getHp() + " | HP Metal Gear REX: " + rex.getHp());
+            if (!rex.estaVivo()) {
                 break;
             }
 
             // Turno de MetalGear
-            System.out.println("\n👾 Turno de MetalGear...");
+            System.out.println("\n👾 Turno de Metal Gear REX...");
 
-            int ataqueEnemigo = random.nextInt(2); // 0: misiles, 1: láser
-            int danio = (ataqueEnemigo == 0) ? 250 : 150;
+            int ataqueEnemigo = random.nextInt(2);
+            int danio = random.nextInt(26) + 15; // 15 a 40
 
             if (ataqueEnemigo == 0) {
-                System.out.println("💣 MetalGear lanza misiles!");
+                System.out.println("💣 Metal Gear REX lanza misiles y produce un daño de " + danio);
             } else {
-                System.out.println("🔫 MetalGear dispara con láser!");
+                System.out.println("🔫 Metal Gear REX dispara con láser y produce un daño de " + danio);
             }
 
-            if (esquivar) {
-                System.out.println("🕹️ Snake esquivó el ataque de MetalGear");
-            } else {
-                snake.recibirDanio(danio);
-            }
+            snake.recibirDanio(danio);
+            ultimoDanioRecibido = danio;
         }
 
         System.out.println("\n🏁 FIN DE LA BATALLA");
         if (snake.estaVivo()) {
-            System.out.println("🎉 ¡Snake ganó!");
+            System.out.println("🎉 ¡Snake ganó!\n");
         } else {
-            System.out.println("💀 MetalGear derrotó a Snake...");
+            System.out.println("💀 Metal Gear REX derrotó a Snake...");
             reiniciarBatallaFinal();
         }
     }
 
     private void reiniciarHp() {
         snake.setHp(100);
-        metalGear.setHp(100);
+        rex.setHp(100);
     }
 
     private void reiniciarBatallaFinal() {
-        System.out.println("\nSnake será llevado al hospital. 🏥");
-
         System.out.println("\n¿Deseas reiniciar la batalla?");
         System.out.println("1. Si");
         System.out.println("2. No");
