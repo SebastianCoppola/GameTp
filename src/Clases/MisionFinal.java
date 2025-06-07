@@ -48,7 +48,7 @@ public class MisionFinal extends Mision {
             System.out.println("\n👾 Turno de MetalGear...");
 
             int ataqueEnemigo = random.nextInt(2); // 0: misiles, 1: láser
-            int danio = (ataqueEnemigo == 0) ? 250 : 150;
+            int danio = (ataqueEnemigo == 0) ? 25 : 15;
 
             if (ataqueEnemigo == 0) {
                 System.out.println("💣 MetalGear lanza misiles!");
