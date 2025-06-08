@@ -1,8 +1,5 @@
 package Clases;
 
-import Clases.Mision;
-import Clases.MisionFinal;
-import Clases.MisionIntermedia;
 import java.util.Scanner;
 
 public class Menu {
