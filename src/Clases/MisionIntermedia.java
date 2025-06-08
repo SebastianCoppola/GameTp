@@ -46,7 +46,6 @@ public class MisionIntermedia extends Mision {
             System.out.println(mensaje);
             System.out.println("Mover (w/a/s/d, x para salir): ");
             String input = scanner.nextLine().trim();
-
             if (input.length() != 1) {
                 System.out.println("Entrada inválida. Ingresá solo una letra.");
                 continue; // vuelve a pedir input
@@ -73,7 +72,7 @@ public class MisionIntermedia extends Mision {
                 llave = null;
             }
             if (snakeConsiguioObjeto(snake, puerta)) {
-                System.out.println("/n¡Snake ha conseguido la puerta! Misión completada./n");
+                System.out.println("¡Snake ha encontrado la puerta! Misión completada.");
                 Menu menuIntermedio = new Menu(1);
                 menuIntermedio.mostrarMenu();
                 break;
@@ -89,8 +88,7 @@ public class MisionIntermedia extends Mision {
             int yGuardia = guardia.getPosicion().getY();
             int dx = xGuardia - xSnake;
             int dy = yGuardia - ySnake;
-
-            if (dx >= -1 && dx <= 1 && dy >= -1 && dy <= 1) {
+            if((dx == 0 && dy == 1) || (dx == 1 && dy == 0) || (dx == 0 && dy == 0) ){
                 return true;
             }
         }
