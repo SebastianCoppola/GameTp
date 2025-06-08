@@ -103,7 +103,7 @@ public class Menu {
     }
 
     private String generarCodigoDeEstado(int progreso) {
-        return "NVL" + (progreso);
+        return "NVL" + (progreso + 1);
     }
 
     private void cargarEstado() {
@@ -111,17 +111,17 @@ public class Menu {
         String codigo = scanner.next();
 
         switch (codigo) {
-            case "NVL0":
+            case "NVL1":
                 System.out.println("Estado cargado correctamente. Misiones completadas: 1");
                 Mision mision = new MisionIntermedia(2);
                 mision.iniciar();
                 break;
-            case "NVL1":
+            case "NVL2":
                 System.out.println("Estado cargado correctamente. Misiones completadas: 2");
                 Mision misionFinal = new MisionFinal();
                 misionFinal.iniciar();
                 break;
-            case "NVL2":
+            case "NVL3":
                 System.out.println("Haz superado todas las misiones, Felicidades!!");
                 break;
             default:

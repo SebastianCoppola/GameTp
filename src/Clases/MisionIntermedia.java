@@ -106,8 +106,8 @@ public class MisionIntermedia extends Mision {
     }
 
     private void iniciarMision2() {
-        //Una vez se complete la misión que se muestre el menú
         System.out.println("ADVERTENCIA!! Misión en progreso!!");
+        //Una vez se complete la misión que se muestre el menú
         Menu menuIntermedio = new Menu(2);
         menuIntermedio.mostrarMenu();
     }
