@@ -104,9 +104,67 @@ public class MisionIntermedia extends Mision {
     }
 
     private void iniciarMision2() {
-        System.out.println("ADVERTENCIA!! Misión en progreso!!");
-        //Una vez se complete la misión que se muestre el menú
-        Menu menuIntermedio = new Menu(2);
-        menuIntermedio.mostrarMenu();
+        //Creo el mapa:
+        Mapa mapa = new Mapa(9, 9);
+        //Creo a Snake:
+        Snake snake = new Snake(new Posicion(3, 3));
+        mapa.setSnake(snake);
+        //Creo los guardias:
+        Guardia[] guardias = new Guardia[1];
+        Guardia guardia = new Guardia(new Posicion(5, 5));
+        guardias[0] = guardia;
+        mapa.setGuardias(guardias);
+        //Creo los objetos de la misión: C4 y la Salida 'P'
+        Objeto[] objetos = new Objeto[2];
+        Objeto c4 = new Objeto("Explosivo C4", "C4", new Posicion(1, 1));
+        Objeto salidaP = new Objeto("Salida", "P", new Posicion(6, 6));
+        objetos[0] = c4;
+        objetos[1] = salidaP;
+        mapa.setObjetos(objetos);
+        //Creo el mensaje:
+        String mensaje = "Busca el explosivo 'C4' y dirígete a la puerta de salida 'P'.";
+        //Inicio la misión:
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+            mapa.actualizarMapa();
+            System.out.println(mensaje);
+            System.out.println("Mover (w/a/s/d, x para salir): ");
+            String input = scanner.nextLine().trim();
+            if (input.length() != 1) {
+                System.out.println("Entrada inválida. Ingresá solo una letra.");
+                continue;
+            }
+            if (input.equalsIgnoreCase("x")) {
+                System.out.println("Saliendo de la misión.");
+                break;
+            }
+            snake.moverPersonaje(input, mapa);
+            for (Guardia g : guardias) {
+                g.moverAleatorio(mapa);
+            }
+            if (snakeFueAtrapadoPorGuardia(snake, guardias)) {
+                mapa.actualizarMapa();
+                System.out.println("¡Snake ha sido atrapado por un enemigo!");
+                System.out.println("La misión debe comenzar de nuevo.");
+                break;
+            }
+            if (c4 != null && snakeConsiguioObjeto(snake, c4)) {
+                System.out.println("¡Snake ha conseguido el explosivo C4!");
+                mensaje = "¡Ahora dirigete a la salida 'P'!";
+                Objeto[] tempObjetos = new Objeto[1];
+                tempObjetos[0] = salidaP;
+                mapa.setObjetos(tempObjetos);
+                c4 = null;
+            }
+
+            if (c4 == null && snakeConsiguioObjeto(snake, salidaP)) {
+                mapa.actualizarMapa();
+                System.out.println("¡Snake ha llegado a la salida con el C4! Misión completada.");
+                Menu menuIntermedio = new Menu(2);
+                menuIntermedio.mostrarMenu();
+                break;
+            }
+        }
+        scanner.close();
     }
 }

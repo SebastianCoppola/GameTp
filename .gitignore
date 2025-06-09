@@ -1,0 +1,12 @@
+# Archivos de configuración del IDE
+.idea/
+*.iml
+nbproject/
+
+# Carpetas de salida de compilación
+out/
+build/
+dist/
+
+# Archivos generados
+*.class
