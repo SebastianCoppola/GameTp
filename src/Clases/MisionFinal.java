@@ -80,9 +80,12 @@ public class MisionFinal extends Mision {
         System.out.println("\n🏁 FIN DE LA BATALLA");
         if (snake.estaVivo()) {
             System.out.println("🎉 ¡Snake ganó!\n");
+            Menu menuIntermedio = new Menu(3);
+            menuIntermedio.mostrarMenu();
         } else {
             System.out.println("💀 Metal Gear REX derrotó a Snake...");
-            reiniciarBatallaFinal();
+            Menu menuIntermedio = new Menu(2);
+            menuIntermedio.mostrarMenu();
         }
     }
 
@@ -107,7 +110,8 @@ public class MisionFinal extends Mision {
                     break;
                 case 2:
                     System.out.println("\n🏁 Fin del juego. Volviendo al menú principal...\n");
-                    return;
+                    Menu menuFinal = new Menu(2);
+                    menuFinal.mostrarMenu();
                 default:
                     System.out.println("❌ Opción inválida, intente nuevamente");
                     break;
