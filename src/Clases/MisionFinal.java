@@ -65,7 +65,7 @@ public class MisionFinal extends Mision {
             System.out.println("\n👾 Turno de Metal Gear REX...");
 
             int ataqueEnemigo = random.nextInt(2);
-            int danio = random.nextInt(26) + 15; // 15 a 40
+            int danio = random.nextInt(26) + 15;
 
             if (ataqueEnemigo == 0) {
                 System.out.println("💣 Metal Gear REX lanza misiles y produce un daño de " + danio);
@@ -87,35 +87,5 @@ public class MisionFinal extends Mision {
             Menu menuIntermedio = new Menu(2);
             menuIntermedio.mostrarMenu();
         }
-    }
-
-    private void reiniciarHp() {
-        snake.setHp(100);
-        rex.setHp(100);
-    }
-
-    private void reiniciarBatallaFinal() {
-        System.out.println("\n¿Deseas reiniciar la batalla?");
-        System.out.println("1. Si");
-        System.out.println("2. No");
-        System.out.print("Tu elección: ");
-
-        int opcion = scanner.nextInt();
-        do {
-            switch (opcion) {
-                case 1:
-                    System.out.println("Se reinicia la batalla.");
-                    reiniciarHp();
-                    iniciar();
-                    break;
-                case 2:
-                    System.out.println("\n🏁 Fin del juego. Volviendo al menú principal...\n");
-                    Menu menuFinal = new Menu(2);
-                    menuFinal.mostrarMenu();
-                default:
-                    System.out.println("❌ Opción inválida, intente nuevamente");
-                    break;
-            }
-        } while (opcion != 1 && opcion != 2);
     }
 }
