@@ -12,43 +12,63 @@ public class MisionIntermedia extends Mision {
 
     @Override
     public void iniciar() {
-        if (this.numero == 1) {
-            iniciarMision1();
+        //Defino valores según misión:
+        int numeroMision = this.numero;
+        int filasColumnas = numeroMision == 1 ? 7 : 9;
+        int cantidadGuardias = numeroMision == 1 ? 1 : 2;
+        Objeto objeto1;
+        Objeto objeto2;
+        if (numeroMision == 1) {
+            objeto1 = new Objeto(
+                    "Llave",
+                    "L ",
+                    "Busca la llave 'L'!",
+                    "Haz conseguido la llave!!"
+            );
+            objeto2 = new Objeto(
+                    "Puerta",
+                    "H ",
+                    "Dirígete al hangar de entrada 'H'!",
+                    "Haz encontrado el hangar 'H'!!"
+            );
         } else {
-            iniciarMision2();
+            objeto1 = new Objeto(
+                    "Explosivo C4",
+                    "C4",
+                    "Busca el explosivo 'C4'!",
+                    "Haz conseguido el explosivo!!"
+            );
+            objeto2 = new Objeto(
+                    "Salida",
+                    "P ",
+                    "Dirígete hacia la puerta 'P'!",
+                    "Haz encontrado la puerta 'P'!!");
         }
-    }
 
-    private void iniciarMision1() {
-        //Creo el mapa:
-        Mapa mapa = new Mapa(7, 7);
-        //Creo a Snake:
-        Snake snake = new Snake(new Posicion(3, 3));
+        //Creo Mapa, Personajes y Objetos:
+        Mapa mapa = new Mapa(filasColumnas, filasColumnas);
+        Snake snake = new Snake(mapa.generarPosicionAleatoria());
         mapa.setSnake(snake);
-        //Creo los guardias:
-        Guardia[] guardias = new Guardia[1];
-        Guardia guardia = new Guardia(new Posicion(5, 5));
-        guardias[0] = guardia;
+        Guardia[] guardias = new Guardia[cantidadGuardias];
+        for (int i = 0; i < cantidadGuardias; i++) {
+            Guardia guardia = new Guardia(mapa.generarPosicionAleatoria());
+            guardias[i] = guardia;
+        }
         mapa.setGuardias(guardias);
-        //Creo los objetos:
-        Objeto[] objetos = new Objeto[2];
-        Objeto llave = new Objeto("Llave", "L", new Posicion(1, 1));
-        Objeto puerta = new Objeto("Puerta", "H", new Posicion(6, 6));
-        objetos[0] = llave;
-        objetos[1] = puerta;
-        mapa.setObjetos(objetos);
-        //Creo el mensaje:
-        String mensaje = "Busca la llave ' L '";
+        objeto1.setPosicion(mapa.generarPosicionAleatoria());
+        mapa.setObjeto(objeto1);
+
         //Inicio la misión:
         Scanner scanner = new Scanner(System.in);
-        while (true) {
+        boolean isPlaying = true;
+        while (isPlaying) {
             mapa.actualizarMapa();
-            System.out.println(mensaje);
+            System.out.println(mapa.getObjeto().getMensajeInstruccion());
             System.out.println("Mover (w/a/s/d, x para salir): ");
             String input = scanner.nextLine().trim();
             if (input.length() != 1) {
                 System.out.println("Entrada inválida. Ingresá solo una letra.");
-                continue; // vuelve a pedir input
+                continue;
             }
             if (input.equals("x")) {
                 break;
@@ -61,25 +81,40 @@ public class MisionIntermedia extends Mision {
                 mapa.actualizarMapa();
                 System.out.println("¡Snake ha sido atrapado por un guardia!");
                 System.out.println("Fin de la misión.");
-                break;
+                isPlaying = false;
             }
-            if (llave != null && snakeConsiguioObjeto(snake, llave)) {
-                System.out.println("¡Snake ha conseguido la llave!");
-                mensaje = "¡Ahora dirigete a la puerta ' H '!";
-                Objeto[] tempObjetos = new Objeto[1];
-                tempObjetos[0] = puerta;
-                mapa.setObjetos(tempObjetos);
-                llave = null;
+            if (snakeConsiguioObjeto(snake, mapa.getObjeto())) {
+                if (objeto1.getPosicion() == null) {
+                    System.out.println(mapa.getObjeto().getMensajeFinalizacion());
+                    objeto2.recogerObjeto();
+                    mapa.setObjeto(null);
+                    isPlaying = false;
+                } else {
+                    System.out.println(mapa.getObjeto().getMensajeFinalizacion());
+                    objeto1.recogerObjeto();
+                    mapa.setObjeto(null);
+                    objeto2.setPosicion(mapa.generarPosicionAleatoria());
+                    mapa.setObjeto(objeto2);
+                }
+
             }
-            if (snakeConsiguioObjeto(snake, puerta)) {
-                System.out.println("¡Snake ha encontrado la puerta! Misión completada.");
-                Menu menuIntermedio = new Menu(1);
-                menuIntermedio.mostrarMenu();
-                break;
-            }
+        }
+        if(mapa.getObjeto() == null){
+            Menu menuIntermedio = new Menu(numeroMision);
+            menuIntermedio.mostrarMenu();
+        }else{
+            Menu menuIntermedio = new Menu(numeroMision + 1);
+            menuIntermedio.mostrarMenu();
         }
     }
 
+    /**
+     * Método apra validar si la pocisión de Snake coincide con la de algún guardia.
+     *
+     * @param snake    con la pocisión a comparar.
+     * @param guardias listado de guardias.
+     * @return Boolean true/false si la posición coincide.
+     */
     private Boolean snakeFueAtrapadoPorGuardia(Snake snake, Guardia[] guardias) {
         int xSnake = snake.getPosicion().getX();
         int ySnake = snake.getPosicion().getY();
@@ -88,83 +123,25 @@ public class MisionIntermedia extends Mision {
             int yGuardia = guardia.getPosicion().getY();
             int dx = xGuardia - xSnake;
             int dy = yGuardia - ySnake;
-            if((dx == 0 && dy == 1) || (dx == 1 && dy == 0) || (dx == 0 && dy == 0) ){
+            if ((dx == 0 && dy == 1) || (dx == 1 && dy == 0) || (dx == 0 && dy == 0)) {
                 return true;
             }
         }
         return false;
     }
 
+    /**
+     * Método apra validar si la pocisión de Snake coincide con la de un objeto.
+     *
+     * @param snake  con la posición a comparar.
+     * @param objeto con la posición a comparar.
+     * @return Boolean true/false si la posición coincide.
+     */
     private Boolean snakeConsiguioObjeto(Snake snake, Objeto objeto) {
         int xSnake = snake.getPosicion().getX();
         int ySnake = snake.getPosicion().getY();
         int xObjeto = objeto.getPosicion().getX();
         int yObjeto = objeto.getPosicion().getY();
         return (xSnake == xObjeto && ySnake == yObjeto);
-    }
-
-    private void iniciarMision2() {
-        //Creo el mapa:
-        Mapa mapa = new Mapa(9, 9);
-        //Creo a Snake:
-        Snake snake = new Snake(new Posicion(3, 3));
-        mapa.setSnake(snake);
-        //Creo los guardias:
-        Guardia[] guardias = new Guardia[1];
-        Guardia guardia = new Guardia(new Posicion(5, 5));
-        guardias[0] = guardia;
-        mapa.setGuardias(guardias);
-        //Creo los objetos de la misión: C4 y la Salida 'P'
-        Objeto[] objetos = new Objeto[2];
-        Objeto c4 = new Objeto("Explosivo C4", "C4", new Posicion(1, 1));
-        Objeto salidaP = new Objeto("Salida", "P", new Posicion(6, 6));
-        objetos[0] = c4;
-        objetos[1] = salidaP;
-        mapa.setObjetos(objetos);
-        //Creo el mensaje:
-        String mensaje = "Busca el explosivo 'C4' y dirígete a la puerta de salida 'P'.";
-        //Inicio la misión:
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-            mapa.actualizarMapa();
-            System.out.println(mensaje);
-            System.out.println("Mover (w/a/s/d, x para salir): ");
-            String input = scanner.nextLine().trim();
-            if (input.length() != 1) {
-                System.out.println("Entrada inválida. Ingresá solo una letra.");
-                continue;
-            }
-            if (input.equalsIgnoreCase("x")) {
-                System.out.println("Saliendo de la misión.");
-                break;
-            }
-            snake.moverPersonaje(input, mapa);
-            for (Guardia g : guardias) {
-                g.moverAleatorio(mapa);
-            }
-            if (snakeFueAtrapadoPorGuardia(snake, guardias)) {
-                mapa.actualizarMapa();
-                System.out.println("¡Snake ha sido atrapado por un enemigo!");
-                System.out.println("La misión debe comenzar de nuevo.");
-                break;
-            }
-            if (c4 != null && snakeConsiguioObjeto(snake, c4)) {
-                System.out.println("¡Snake ha conseguido el explosivo C4!");
-                mensaje = "¡Ahora dirigete a la salida 'P'!";
-                Objeto[] tempObjetos = new Objeto[1];
-                tempObjetos[0] = salidaP;
-                mapa.setObjetos(tempObjetos);
-                c4 = null;
-            }
-
-            if (c4 == null && snakeConsiguioObjeto(snake, salidaP)) {
-                mapa.actualizarMapa();
-                System.out.println("¡Snake ha llegado a la salida con el C4! Misión completada.");
-                Menu menuIntermedio = new Menu(2);
-                menuIntermedio.mostrarMenu();
-                break;
-            }
-        }
-        scanner.close();
     }
 }
