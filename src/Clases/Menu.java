@@ -38,6 +38,13 @@ public class Menu {
                     System.out.println("4. Salir");
                     System.out.print("Tu elección: ");
                     break;
+                case 3: 
+                    System.out.println("1. Reiniciar juego desde cero");
+                    System.out.println("2. Guardar estado");
+                    System.out.println("3. Cargar estado");
+                    System.out.println("4. Salir");
+                    System.out.print("Tu elección: ");
+                    break;
             }
 
             opcion = scanner.nextInt();
@@ -100,7 +107,10 @@ public class Menu {
     }
 
     private String generarCodigoDeEstado(int progreso) {
-        return "NVL" + (progreso + 1);
+        if(progreso == 0) {
+            progreso = progreso + 1;
+        }
+        return "NVL" + (progreso);
     }
 
     private void cargarEstado() {
@@ -110,11 +120,13 @@ public class Menu {
         switch (codigo) {
             case "NVL1":
                 System.out.println("Estado cargado correctamente. Misiones completadas: 1");
+                progreso = 1;
                 Mision mision = new MisionIntermedia(2);
                 mision.iniciar();
                 break;
             case "NVL2":
                 System.out.println("Estado cargado correctamente. Misiones completadas: 2");
+                progreso = 2;
                 Mision misionFinal = new MisionFinal();
                 misionFinal.iniciar();
                 break;
@@ -126,5 +138,4 @@ public class Menu {
                 break;
         }
     }
-
 }
