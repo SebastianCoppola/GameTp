@@ -51,10 +51,8 @@ public class Mapa {
         inicializarMapa();
     }
 
-    //Methods:
     /**
      * Inicializa el mapa.
-     *
      */
     private void inicializarMapa() {
         for (int i = 0; i < filas; i++) {
@@ -128,15 +126,15 @@ public class Mapa {
      * @return Boolean true/false si la posición es válida.
      */
     private boolean esPosicionValida(Posicion pos) {
-        if (snake != null && !pos.esSeparacionInicialCorrecta(snake.getPosicion())) {
+        if (snake != null && !pos.isSeparacionInicialCorrecta(snake.getPosicion())) {
             return false;
         }
-        if (objeto != null && !pos.esSeparacionInicialCorrecta(objeto.getPosicion())) {
+        if (objeto != null && !pos.isSeparacionInicialCorrecta(objeto.getPosicion())) {
             return false;
         }
         if (guardias != null) {
             for (Guardia guardia : guardias) {
-                if (!pos.esSeparacionInicialCorrecta(guardia.getPosicion())) {
+                if (!pos.isSeparacionInicialCorrecta(guardia.getPosicion())) {
                     return false;
                 }
             }
@@ -144,51 +142,4 @@ public class Mapa {
         return true;
     }
 
-    public void mostrar(Personaje snake) {
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                if (i == snake.getPosicion().getX() && j == snake.getPosicion().getY()) {
-                    System.out.print("S ");
-                } else {
-                    System.out.print(matriz[i][j] + " ");
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    public void mostrar(Objeto objeto) {
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                if (i == objeto.getPosicion().getX() && j == objeto.getPosicion().getY()) {
-                    System.out.print("S ");
-                } else {
-                    System.out.print(matriz[i][j] + " ");
-                }
-            }
-            System.out.println();
-        }
-    }
-
-    public void moverSnake(Snake snake, char direccion) {
-        int dx = 0, dy = 0;
-        switch (direccion) {
-            case 'w': dx = -1; break;
-            case 's': dx = 1; break;
-            case 'a': dy = -1; break;
-            case 'd': dy = 1; break;
-            default:
-                System.out.println("Dirección inválida.");
-                return;
-        }
-
-        int nuevaX = snake.getPosicion().getX() + dx;
-        int nuevaY = snake.getPosicion().getY() + dy;
-
-        if (nuevaX >= 0 && nuevaX < filas && nuevaY >= 0 && nuevaY < columnas) {
-            snake.getPosicion().mover(dx, dy);
-        } else {
-            System.out.println("Movimiento inválido: fuera del mapa.");
-        }
-    }
 }

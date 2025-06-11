@@ -15,7 +15,7 @@ public class MisionIntermedia extends Mision {
         //Defino valores según misión:
         int numeroMision = this.numero;
         int filasColumnas = numeroMision == 1 ? 7 : 9;
-        int cantidadGuardias = numeroMision == 1 ? 1 : 2;
+        int cantidadGuardias = numeroMision == 1 ? 3 : 5;
         Objeto objeto1;
         Objeto objeto2;
         if (numeroMision == 1) {
@@ -82,13 +82,18 @@ public class MisionIntermedia extends Mision {
                 System.out.println("¡Snake ha sido atrapado por un guardia!");
                 System.out.println("Fin de la misión.");
                 isPlaying = false;
+                continue;
             }
-            if (snakeConsiguioObjeto(snake, mapa.getObjeto())) {
+            if (snake.getPosicion().equals(mapa.getObjeto().getPosicion())) {
                 if (objeto1.getPosicion() == null) {
-                    System.out.println(mapa.getObjeto().getMensajeFinalizacion());
-                    objeto2.recogerObjeto();
-                    mapa.setObjeto(null);
-                    isPlaying = false;
+                    if (numeroMision == 1 || (numeroMision == 2 && !snakeEstaCercaDeGuardia(snake, guardias))) {
+                        System.out.println(mapa.getObjeto().getMensajeFinalizacion());
+                        objeto2.recogerObjeto();
+                        mapa.setObjeto(null);
+                        isPlaying = false;
+                    } else {
+                        System.out.println("El explosivo hace mucho ruido! Snake debe estar más lejos de los guardias!!!");
+                    }
                 } else {
                     System.out.println(mapa.getObjeto().getMensajeFinalizacion());
                     objeto1.recogerObjeto();
@@ -96,7 +101,6 @@ public class MisionIntermedia extends Mision {
                     objeto2.setPosicion(mapa.generarPosicionAleatoria());
                     mapa.setObjeto(objeto2);
                 }
-
             }
         }
         if (mapa.getObjeto() == null) {
@@ -122,14 +126,8 @@ public class MisionIntermedia extends Mision {
      * @return Boolean true/false si la posición coincide.
      */
     private Boolean snakeFueAtrapadoPorGuardia(Snake snake, Guardia[] guardias) {
-        int xSnake = snake.getPosicion().getX();
-        int ySnake = snake.getPosicion().getY();
         for (Guardia guardia : guardias) {
-            int xGuardia = guardia.getPosicion().getX();
-            int yGuardia = guardia.getPosicion().getY();
-            int dx = xGuardia - xSnake;
-            int dy = yGuardia - ySnake;
-            if ((dx == 0 && dy == 1) || (dx == 1 && dy == 0) || (dx == 0 && dy == 0)) {
+            if (snake.getPosicion().isSeparacionIgualA1(guardia.getPosicion())) {
                 return true;
             }
         }
@@ -137,17 +135,18 @@ public class MisionIntermedia extends Mision {
     }
 
     /**
-     * Método apra validar si la pocisión de Snake coincide con la de un objeto.
+     * Método apra validar si la pocisión de Snake está lo suficientemente lejos de los guardias.
      *
-     * @param snake con la posición a comparar.
-     * @param objeto con la posición a comparar.
-     * @return Boolean true/false si la posición coincide.
+     * @param snake con la pocisión a comparar.
+     * @param guardias listado de guardias.
+     * @return Boolean true/false si la posición es correcta.
      */
-    private Boolean snakeConsiguioObjeto(Snake snake, Objeto objeto) {
-        int xSnake = snake.getPosicion().getX();
-        int ySnake = snake.getPosicion().getY();
-        int xObjeto = objeto.getPosicion().getX();
-        int yObjeto = objeto.getPosicion().getY();
-        return (xSnake == xObjeto && ySnake == yObjeto);
+    private Boolean snakeEstaCercaDeGuardia(Snake snake, Guardia[] guardias) {
+        for (Guardia guardia : guardias) {
+            if (snake.getPosicion().isSeparacionMenorA3(guardia.getPosicion())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
