@@ -39,7 +39,7 @@ public class Menu {
                     System.out.print("Tu elección: ");
                     break;
                 case 3: 
-                    System.out.println("1. Reiniciar juego desde cero");
+                    System.out.println("1. Reiniciar Misión Final");
                     System.out.println("2. Guardar estado");
                     System.out.println("3. Cargar estado");
                     System.out.println("4. Salir");

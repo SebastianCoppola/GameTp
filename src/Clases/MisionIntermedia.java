@@ -99,19 +99,25 @@ public class MisionIntermedia extends Mision {
 
             }
         }
-        if(mapa.getObjeto() == null){
+        if (mapa.getObjeto() == null) {
             Menu menuIntermedio = new Menu(numeroMision);
             menuIntermedio.mostrarMenu();
-        }else{
-            Menu menuIntermedio = new Menu(numeroMision + 1);
-            menuIntermedio.mostrarMenu();
+        } else {
+            if (numeroMision == 1) {
+                Menu menuIntermedio = new Menu(0);
+                menuIntermedio.mostrarMenu();
+            } else {
+                Menu menuIntermedio = new Menu(1);
+                menuIntermedio.mostrarMenu();
+            }
         }
     }
 
     /**
-     * Método apra validar si la pocisión de Snake coincide con la de algún guardia.
+     * Método apra validar si la pocisión de Snake coincide con la de algún
+     * guardia.
      *
-     * @param snake    con la pocisión a comparar.
+     * @param snake con la pocisión a comparar.
      * @param guardias listado de guardias.
      * @return Boolean true/false si la posición coincide.
      */
@@ -133,7 +139,7 @@ public class MisionIntermedia extends Mision {
     /**
      * Método apra validar si la pocisión de Snake coincide con la de un objeto.
      *
-     * @param snake  con la posición a comparar.
+     * @param snake con la posición a comparar.
      * @param objeto con la posición a comparar.
      * @return Boolean true/false si la posición coincide.
      */
