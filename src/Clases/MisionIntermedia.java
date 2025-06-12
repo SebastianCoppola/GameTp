@@ -15,7 +15,7 @@ public class MisionIntermedia extends Mision {
         //Defino valores según misión:
         int numeroMision = this.numero;
         int filasColumnas = numeroMision == 1 ? 7 : 9;
-        int cantidadGuardias = numeroMision == 1 ? 3 : 5;
+        int cantidadGuardias = numeroMision == 1 ? 2 : 4;
         Objeto objeto1;
         Objeto objeto2;
         if (numeroMision == 1) {
@@ -75,14 +75,16 @@ public class MisionIntermedia extends Mision {
             }
             snake.moverPersonaje(input, mapa);
             for (Guardia g : guardias) {
-                g.moverAleatorio(mapa);
+                g.patrullar(mapa);
             }
-            if (snakeFueAtrapadoPorGuardia(snake, guardias)) {
+            for (Guardia g : guardias) {
+                if (g.atrapar(snake.getPosicion())) {
                 mapa.actualizarMapa();
                 System.out.println("¡Snake ha sido atrapado por un guardia!");
                 System.out.println("Fin de la misión.");
                 isPlaying = false;
                 continue;
+                }
             }
             if (snake.getPosicion().equals(mapa.getObjeto().getPosicion())) {
                 if (objeto1.getPosicion() == null) {
@@ -118,24 +120,7 @@ public class MisionIntermedia extends Mision {
     }
 
     /**
-     * Método apra validar si la pocisión de Snake coincide con la de algún
-     * guardia.
-     *
-     * @param snake con la pocisión a comparar.
-     * @param guardias listado de guardias.
-     * @return Boolean true/false si la posición coincide.
-     */
-    private Boolean snakeFueAtrapadoPorGuardia(Snake snake, Guardia[] guardias) {
-        for (Guardia guardia : guardias) {
-            if (snake.getPosicion().isSeparacionIgualA1(guardia.getPosicion())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Método apra validar si la pocisión de Snake está lo suficientemente lejos de los guardias.
+     * Método para validar si la pocisión de Snake está lo suficientemente lejos de los guardias.
      *
      * @param snake con la pocisión a comparar.
      * @param guardias listado de guardias.

@@ -12,7 +12,6 @@ public class MisionFinal extends Mision {
 
     @Override
     public void iniciar() {
-        int ultimoDanioRecibido = 0;
         boolean opcionValida;
 
         System.out.println("\n¡Comienza la batalla final entre Snake y Metal Gear REX!");
@@ -26,6 +25,7 @@ public class MisionFinal extends Mision {
                 System.out.println("2. Esquivar ataque (reduce daño recibido entre 50% y 100%)");
                 System.out.print("Tu elección: ");
 
+                int ultimoDanioRecibido = rex.getUltimoDanioDeAtaque();
                 int opcion = scanner.nextInt();
 
                 switch (opcion) {
@@ -63,18 +63,7 @@ public class MisionFinal extends Mision {
 
             // Turno de MetalGear
             System.out.println("\n👾 Turno de Metal Gear REX...");
-
-            int ataqueEnemigo = random.nextInt(2);
-            int danio = random.nextInt(26) + 15;
-
-            if (ataqueEnemigo == 0) {
-                System.out.println("💣 Metal Gear REX lanza misiles y produce un daño de " + danio);
-            } else {
-                System.out.println("🔫 Metal Gear REX dispara con láser y produce un daño de " + danio);
-            }
-
-            snake.recibirDanio(danio);
-            ultimoDanioRecibido = danio;
+            rex.atacar(snake);
         }
 
         System.out.println("\n🏁 FIN DE LA BATALLA");
@@ -83,7 +72,7 @@ public class MisionFinal extends Mision {
             Menu menuIntermedio = new Menu(3);
             menuIntermedio.mostrarMenu();
         } else {
-            System.out.println("💀 Metal Gear REX derrotó a Snake...");
+            System.out.println("💀 Metal Gear REX derrotó a Snake...\n");
             Menu menuIntermedio = new Menu(2);
             menuIntermedio.mostrarMenu();
         }

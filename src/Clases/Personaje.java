@@ -61,10 +61,4 @@ public abstract class Personaje {
             this.getPosicion().mover(dx, dy);
         }
     }
-
-    public void moverAleatorio(Mapa mapa) {
-        String[] direcciones = {"a", "w", "s", "d"};
-        String direccionAleatoria = direcciones[(int) (Math.random() * direcciones.length)];
-        moverPersonaje(direccionAleatoria, mapa);
-    }
 }
