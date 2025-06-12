@@ -14,7 +14,8 @@ public class MisionFinal extends Mision {
     public void iniciar() {
         boolean opcionValida;
 
-        System.out.println("\n¡Comienza la batalla final entre Snake y Metal Gear REX!");
+        System.out.println("\nFelicitaciones!! has llegado a la Misión Final");
+        System.out.println("¡Comienza la batalla final entre Snake y Metal Gear REX!");
 
         while (snake.estaVivo() && rex.estaVivo()) {
             do {
