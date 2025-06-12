@@ -64,7 +64,7 @@ public class MisionIntermedia extends Mision {
         while (isPlaying) {
             mapa.actualizarMapa();
             System.out.println(mapa.getObjeto().getMensajeInstruccion());
-            System.out.println("Mover (w/a/s/d, x para salir): ");
+            System.out.println("Mover (w: arriba, a: izquierda, s: abajo, d: derecha, x: salir): ");
             String input = scanner.nextLine().trim();
             if (input.length() != 1) {
                 System.out.println("Entrada inválida. Ingresá solo una letra.");

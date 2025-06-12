@@ -5,10 +5,10 @@ import java.util.Scanner;
 public class Menu {
 
     static Scanner scanner = new Scanner(System.in);
-    private int progreso = 0;
+    private int misionesCompletadas = 0;
 
-    public Menu(int progreso) {
-        this.progreso = progreso;
+    public Menu(int misionesCompletadas) {
+        this.misionesCompletadas = misionesCompletadas;
     }
 
     public void mostrarMenu() {
@@ -17,7 +17,7 @@ public class Menu {
         do {
             System.out.println("    MENÚ PRINCIPAL    ");
 
-            switch (progreso) {
+            switch (misionesCompletadas) {
                 case 0:
                     System.out.println("1. Iniciar Misión Inicial");
                     System.out.println("2. Cargar estado");
@@ -49,7 +49,7 @@ public class Menu {
 
             opcion = scanner.nextInt();
 
-            if (progreso != 0) {
+            if (misionesCompletadas != 0) {
                 switch (opcion) {
                     case 1:
                         iniciar();
@@ -88,11 +88,11 @@ public class Menu {
     }
 
     private void iniciar() {
-        // Determina qué misión iniciar según el progreso del jugador
-        if (progreso == 0) {
+        // Determina qué misión iniciar según las misiones completadas del jugador
+        if (misionesCompletadas == 0) {
             Mision mision = new MisionIntermedia(1);
             mision.iniciar();
-        } else if (progreso == 1) {
+        } else if (misionesCompletadas == 1) {
             Mision mision = new MisionIntermedia(2);
             mision.iniciar();
         } else {
@@ -102,31 +102,28 @@ public class Menu {
     }
 
     private void guardarEstado() {
-        String codigo = generarCodigoDeEstado(progreso);
+        String codigo = generarCodigoDeEstado(misionesCompletadas);
         System.out.println("Tu código de estado es: " + codigo);
     }
 
-    private String generarCodigoDeEstado(int progreso) {
-        if(progreso == 0) {
-            progreso = progreso + 1;
-        }
-        return "NVL" + (progreso);
+    private String generarCodigoDeEstado(int misionesCompletadas) {
+        return "NVL" + (misionesCompletadas);
     }
 
-    private void cargarEstado() {
+    private void cargarEstado() {   
         System.out.println("Ingresá tu código de estado: ");
         String codigo = scanner.next();
 
         switch (codigo) {
             case "NVL1":
                 System.out.println("Estado cargado correctamente. Misiones completadas: 1");
-                progreso = 1;
+                misionesCompletadas = 1;
                 Mision mision = new MisionIntermedia(2);
                 mision.iniciar();
                 break;
             case "NVL2":
                 System.out.println("Estado cargado correctamente. Misiones completadas: 2");
-                progreso = 2;
+                misionesCompletadas = 2;
                 Mision misionFinal = new MisionFinal();
                 misionFinal.iniciar();
                 break;
