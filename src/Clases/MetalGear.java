@@ -16,7 +16,7 @@ public class MetalGear extends Personaje implements Enemigo {
     }
 
     @Override
-    public boolean atrapar(Posicion snake) {
+    public boolean puedeAtrapar(Posicion snake) {
         //No puede atrapar 
         return false;
     }

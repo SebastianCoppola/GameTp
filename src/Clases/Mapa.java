@@ -6,7 +6,7 @@ public class Mapa {
 
     private int filas;
     private int columnas;
-    private String[][] matriz;
+    private Celda[][] tablero;
     private Snake snake;
     private Guardia[] guardias;
     private Objeto objeto;
@@ -47,42 +47,49 @@ public class Mapa {
     public Mapa(int filas, int columnas) {
         this.filas = filas;
         this.columnas = columnas;
-        this.matriz = new String[filas][columnas];
-        inicializarMapa();
+        this.tablero = new Celda[filas][columnas];
     }
 
     /**
-     * Inicializa el mapa.
+     * Actualiza e imprimr el mapa por consola.
      */
-    private void inicializarMapa() {
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < columnas; j++) {
-                matriz[i][j] = ".";
-            }
-        }
+    public void mostrarMapa(){
+        updateMapa();
+        printMapa();
     }
 
     /**
-     * Imprimer el mapa en pantalla.
-     *
+     * Actualiza las posiciones del mapa.
      */
-    public void actualizarMapa() {
+    private void updateMapa() {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 Posicion tempPosition = new Posicion(i, j);
                 if (tempPosition.equals(snake.getPosicion())) {
-                    System.out.print("S ");
+                    tablero[i][j] = new Celda("S ");
                     continue;
                 }
                 if (tempPosition.equals(objeto.getPosicion())) {
-                    System.out.print(objeto.getIcon());
+                    tablero[i][j] = new Celda(objeto.getIcon());
                     continue;
                 }
                 if(hayGuardiaEnPosicion(tempPosition)){
-                    System.out.print("G ");
+                    tablero[i][j] = new Celda("G ");
                     continue;
                 }
-                System.out.print(matriz[i][j] + " ");
+                tablero[i][j] = new Celda(". ");
+            }
+
+        }
+    }
+
+    /**
+     * Imprimer el mapa.
+     */
+    private void printMapa(){
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < columnas; j++) {
+                System.out.print(tablero[i][j].getItem());
             }
             System.out.println();
         }

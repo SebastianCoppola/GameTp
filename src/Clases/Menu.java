@@ -47,6 +47,10 @@ public class Menu {
                     break;
             }
 
+            while (!scanner.hasNextInt()) {
+                System.out.println("Por favor, ingresa un número válido.");
+                scanner.next();
+            }
             opcion = scanner.nextInt();
 
             if (misionesCompletadas != 0) {

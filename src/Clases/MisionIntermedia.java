@@ -12,7 +12,7 @@ public class MisionIntermedia extends Mision {
 
     @Override
     public void iniciar() {
-        //Defino valores según misión:
+        //Defino valores y objetos según misión:
         int numeroMision = this.numero;
         int filasColumnas = numeroMision == 1 ? 7 : 9;
         int cantidadGuardias = numeroMision == 1 ? 2 : 4;
@@ -62,7 +62,9 @@ public class MisionIntermedia extends Mision {
         Scanner scanner = new Scanner(System.in);
         boolean isPlaying = true;
         while (isPlaying) {
-            mapa.actualizarMapa();
+
+            //Intrucciones y movimientos:
+            mapa.mostrarMapa();
             System.out.println(mapa.getObjeto().getMensajeInstruccion());
             System.out.println("Mover (w: arriba, a: izquierda, s: abajo, d: derecha, x: salir): ");
             String input = scanner.nextLine().trim();
@@ -77,15 +79,26 @@ public class MisionIntermedia extends Mision {
             for (Guardia g : guardias) {
                 g.patrullar(mapa);
             }
+            System.out.println();
+            System.out.println();
+
+            //Chequeo guardias:
+            Boolean snakeFueAtrapado = false;
             for (Guardia g : guardias) {
-                if (g.atrapar(snake.getPosicion())) {
-                mapa.actualizarMapa();
+                if (g.puedeAtrapar(snake.getPosicion())) {
+                    snakeFueAtrapado = true;
+                    break;
+                }
+            }
+            if(snakeFueAtrapado){
+                mapa.mostrarMapa();
                 System.out.println("¡Snake ha sido atrapado por un guardia!");
                 System.out.println("Fin de la misión.");
                 isPlaying = false;
                 continue;
-                }
             }
+
+            //Chequeo objetos:
             if (snake.getPosicion().equals(mapa.getObjeto().getPosicion())) {
                 if (objeto1.getPosicion() == null) {
                     if (numeroMision == 1 || (numeroMision == 2 && !snakeEstaCercaDeGuardia(snake, guardias))) {
@@ -105,6 +118,7 @@ public class MisionIntermedia extends Mision {
                 }
             }
         }
+
         if (mapa.getObjeto() == null) {
             Menu menuIntermedio = new Menu(numeroMision);
             menuIntermedio.mostrarMenu();
@@ -127,11 +141,13 @@ public class MisionIntermedia extends Mision {
      * @return Boolean true/false si la posición es correcta.
      */
     private Boolean snakeEstaCercaDeGuardia(Snake snake, Guardia[] guardias) {
+        Boolean estaCerca = false;
         for (Guardia guardia : guardias) {
             if (snake.getPosicion().isSeparacionMenorA3(guardia.getPosicion())) {
-                return true;
+                estaCerca = true;
+                break;
             }
         }
-        return false;
+        return estaCerca;
     }
 }

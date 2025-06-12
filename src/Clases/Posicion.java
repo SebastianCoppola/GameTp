@@ -61,7 +61,7 @@ public class Posicion {
     public Boolean isSeparacionMenorA3(Posicion posicion){
         int dx = Math.abs(posicion.getX() - x);
         int dy = Math.abs(posicion.getY() - y);
-        return dx < 3 || dy < 3;
+        return (dx < 3 && dy == 0) || (dx == 0 && dy < 3);
     }
 
     @Override

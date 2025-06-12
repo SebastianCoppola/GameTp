@@ -13,14 +13,13 @@ public class Guardia extends Personaje implements Enemigo {
     }
 
     @Override
-    public boolean atrapar(Posicion snake) {
+    public boolean puedeAtrapar(Posicion snake) {
         return this.getPosicion().isSeparacionIgualA1(snake);
     }
 
     @Override
     public void atacar(Snake jugador) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        // No puede patrullar
     }
-
 
 }
