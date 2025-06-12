@@ -18,15 +18,50 @@ public class Posicion {
         return y;
     }
 
-    //Methods:
-    public void mover(int dx, int dy) {
-        this.x += dx;
-        this.y += dy;
+    /**
+     * Asigna nuevos valores a la posición.
+     *
+     * @param x con la cantidad a sumar a x.
+     * @param y con la cantidad a sumar a y.
+     */
+    public void mover(int x, int y) {
+        this.x += x;
+        this.y += y;
     }
 
-    public Boolean esSeparacionInicialCorrecta(Posicion posicion){
+    /**
+     * Evalua si una posición está a más de dos celdas de distancia de this.
+     *
+     * @param posicion con la posicion a evaluar.
+     * @return Boolean true/false segun corresponda.
+     */
+    public Boolean isSeparacionInicialCorrecta(Posicion posicion){
         int distancia = Math.abs(posicion.getX() - x) + Math.abs(posicion.getY() - y);
         return (distancia >= 2);
+    }
+
+    /**
+     * Evalua si una posición está a una celda de distancia de this.
+     *
+     * @param posicion con la posicion a evaluar.
+     * @return Boolean true/false segun corresponda.
+     */
+    public Boolean isSeparacionIgualA1(Posicion posicion){
+        int dx = Math.abs(posicion.getX() - x);
+        int dy = Math.abs(posicion.getY() - y);
+        return (dx == 0 && dy == 1) || (dx == 1 && dy == 0);
+    }
+
+    /**
+     * Evalua si una posición está a por lo menos 3 celdas de distancia de this.
+     *
+     * @param posicion con la posicion a evaluar.
+     * @return Boolean true/false segun corresponda.
+     */
+    public Boolean isSeparacionMenorA3(Posicion posicion){
+        int dx = Math.abs(posicion.getX() - x);
+        int dy = Math.abs(posicion.getY() - y);
+        return dx < 3 || dy < 3;
     }
 
     @Override
