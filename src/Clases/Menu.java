@@ -15,7 +15,7 @@ public class Menu {
         int opcion;
 
         do {
-            System.out.println("    MENÚ PRINCIPAL    ");
+            System.out.println("----- MENÚ PRINCIPAL -----");
 
             switch (misionesCompletadas) {
                 case 0:
@@ -66,7 +66,7 @@ public class Menu {
                         break;
                     case 4:
                         System.out.println("¡Hasta luego!");
-                        break;
+                        return;
                     default:
                         System.out.println("Opción inválida.");
                         break;
@@ -81,7 +81,7 @@ public class Menu {
                         break;
                     case 3:
                         System.out.println("¡Hasta luego!");
-                        break;
+                        return;
                     default:
                         System.out.println("Opción inválida.");
                         break;

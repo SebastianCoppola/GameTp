@@ -15,30 +15,39 @@ public class Mapa {
     public Snake getSnake() {
         return snake;
     }
+
     public void setSnake(Snake snake) {
         this.snake = snake;
     }
+
     public int getFilas() {
         return filas;
     }
+
     public void setFilas(int filas) {
         this.filas = filas;
     }
+
     public int getColumnas() {
         return columnas;
     }
+
     public void setColumnas(int columnas) {
         this.columnas = columnas;
     }
+
     public Guardia[] getGuardias() {
         return guardias;
     }
+
     public void setGuardias(Guardia[] guardias) {
         this.guardias = guardias;
     }
+
     public Objeto getObjeto() {
         return objeto;
     }
+
     public void setObjeto(Objeto objeto) {
         this.objeto = objeto;
     }
@@ -53,7 +62,7 @@ public class Mapa {
     /**
      * Actualiza e imprimr el mapa por consola.
      */
-    public void mostrarMapa(){
+    public void mostrarMapa() {
         updateMapa();
         printMapa();
     }
@@ -73,7 +82,7 @@ public class Mapa {
                     tablero[i][j] = new Celda(objeto.getIcon());
                     continue;
                 }
-                if(hayGuardiaEnPosicion(tempPosition)){
+                if (hayGuardiaEnPosicion(tempPosition)) {
                     tablero[i][j] = new Celda("G ");
                     continue;
                 }
@@ -86,7 +95,7 @@ public class Mapa {
     /**
      * Imprimer el mapa.
      */
-    private void printMapa(){
+    private void printMapa() {
         for (int i = 0; i < filas; i++) {
             for (int j = 0; j < columnas; j++) {
                 System.out.print(tablero[i][j].getItem());
@@ -101,7 +110,7 @@ public class Mapa {
      * @param posicion solicitada.
      * @return Boolean true/false segun la posicion de los guardias.
      */
-    private Boolean hayGuardiaEnPosicion(Posicion posicion){
+    private Boolean hayGuardiaEnPosicion(Posicion posicion) {
         for (Guardia guardia : guardias) {
             if (posicion.equals(guardia.getPosicion())) {
                 return true;
@@ -111,7 +120,8 @@ public class Mapa {
     }
 
     /**
-     * Genera una nueva pocision separada por al menos dos casillas de las anteriores.
+     * Genera una nueva pocision separada por al menos dos casillas de las
+     * anteriores.
      *
      * @return Posicion con una nueva posición válida.
      */
@@ -147,6 +157,26 @@ public class Mapa {
             }
         }
         return true;
+    }
+
+    public boolean celdaEstaOcupada(Posicion pos, Personaje personaje) {
+        if (objeto != null && pos.equals(objeto.getPosicion())) {
+            return true;
+        }
+
+        if (snake != null && pos.equals(snake.getPosicion())) {
+            return true;
+        }
+
+        if (guardias != null) {
+            for (Guardia guardia : guardias) {
+                if (!guardia.equals(personaje) && pos.equals(guardia.getPosicion())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
 }

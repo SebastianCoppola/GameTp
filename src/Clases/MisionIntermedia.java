@@ -58,6 +58,9 @@ public class MisionIntermedia extends Mision {
         objeto1.setPosicion(mapa.generarPosicionAleatoria());
         mapa.setObjeto(objeto1);
 
+        System.out.println("\nComienza la misión número " + numeroMision);
+        System.out.println();
+        
         //Inicio la misión:
         Scanner scanner = new Scanner(System.in);
         boolean isPlaying = true;
@@ -66,7 +69,38 @@ public class MisionIntermedia extends Mision {
             //Intrucciones y movimientos:
             mapa.mostrarMapa();
             System.out.println(mapa.getObjeto().getMensajeInstruccion());
+
+            switch (snake.extremoMapa(snake.getPosicion(), numeroMision)) {
+                case 0:
+                    System.out.println("Imposibilidad de moverse hacia la izquierda y arriba.");
+                    break;
+                case 1:
+                    System.out.println("Imposibilidad de moverse hacia la izquierda y abajo.");
+                    break;
+                case 2:
+                    System.out.println("Imposibilidad de moverse hacia la derecha y arriba.");
+                    break;
+                case 3:
+                    System.out.println("Imposibilidad de moverse hacia la derecha y abajo.");
+                    break;
+                case 4:
+                    System.out.println("Imposibilidad de moverse hacia la izquierda.");
+                    break;
+                case 5:
+                    System.out.println("Imposibilidad de moverse hacia la derecha.");
+                    break;
+                case 6:
+                    System.out.println("Imposibilidad de moverse hacia arriba.");
+                    break;
+                case 7:
+                    System.out.println("Imposibilidad de moverse hacia abajo.");
+                    break;
+                case -1:
+                    System.out.println("Movimiento posible en todas las direcciones.");
+                    break;
+            }
             System.out.println("Mover (w: arriba, a: izquierda, s: abajo, d: derecha, x: salir): ");
+            System.out.print("Tu elección: ");
             String input = scanner.nextLine().trim();
             if (input.length() != 1) {
                 System.out.println("Entrada inválida. Ingresá solo una letra.");
@@ -80,12 +114,11 @@ public class MisionIntermedia extends Mision {
                 g.patrullar(mapa);
             }
             System.out.println();
-            System.out.println();
 
             //Chequeo guardias:
             Boolean snakeFueAtrapado = false;
             for (Guardia g : guardias) {
-                if (g.puedeAtrapar(snake.getPosicion())) {
+                if (g.atrapado(snake.getPosicion())) {
                     snakeFueAtrapado = true;
                     break;
                 }
@@ -102,6 +135,7 @@ public class MisionIntermedia extends Mision {
             if (snake.getPosicion().equals(mapa.getObjeto().getPosicion())) {
                 if (objeto1.getPosicion() == null) {
                     if (numeroMision == 1 || (numeroMision == 2 && !snakeEstaCercaDeGuardia(snake, guardias))) {
+                        mapa.mostrarMapa();
                         System.out.println(mapa.getObjeto().getMensajeFinalizacion());
                         objeto2.recogerObjeto();
                         mapa.setObjeto(null);
@@ -110,6 +144,7 @@ public class MisionIntermedia extends Mision {
                         System.out.println("El explosivo hace mucho ruido! Snake debe estar más lejos de los guardias!!!");
                     }
                 } else {
+                    mapa.mostrarMapa();
                     System.out.println(mapa.getObjeto().getMensajeFinalizacion());
                     objeto1.recogerObjeto();
                     mapa.setObjeto(null);

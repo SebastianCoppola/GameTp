@@ -1,6 +1,7 @@
 package Clases;
 
 public class Guardia extends Personaje implements Enemigo {
+
     public Guardia(Posicion posicion) {
         super(posicion);
     }
@@ -8,12 +9,17 @@ public class Guardia extends Personaje implements Enemigo {
     @Override
     public void patrullar(Mapa mapa) {
         String[] direcciones = {"a", "w", "s", "d"};
-        String direccionAleatoria = direcciones[(int) (Math.random() * direcciones.length)];
-        moverPersonaje(direccionAleatoria, mapa);
+
+        for (int i = 0; i < 10; i++) {
+            String direccion = direcciones[(int) (Math.random() * direcciones.length)];
+            if (this.moverSiPosicionLibre(direccion, mapa)) {
+                break;
+            }
+        }
     }
 
     @Override
-    public boolean puedeAtrapar(Posicion snake) {
+    public boolean atrapado(Posicion snake) {
         return this.getPosicion().isSeparacionIgualA1(snake);
     }
 

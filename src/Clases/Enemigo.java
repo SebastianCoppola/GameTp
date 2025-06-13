@@ -4,7 +4,7 @@ public interface Enemigo {
 
     void patrullar(Mapa mapa);
 
-    boolean puedeAtrapar(Posicion snake);
+    boolean atrapado(Posicion snake);
 
     void atacar(Snake jugador);
 }
