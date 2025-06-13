@@ -21,28 +21,24 @@ public class Menu {
                 case 0:
                     System.out.println("1. Iniciar Misión Inicial");
                     System.out.println("2. Cargar estado");
-                    System.out.println("3. Salir");
                     System.out.print("Tu elección: ");
                     break;
                 case 1:
                     System.out.println("1. Iniciar Misión Intermedia");
                     System.out.println("2. Guardar estado");
                     System.out.println("3. Cargar estado");
-                    System.out.println("4. Salir");
                     System.out.print("Tu elección: ");
                     break;
                 case 2:
                     System.out.println("1. Iniciar Misión Final");
                     System.out.println("2. Guardar estado");
                     System.out.println("3. Cargar estado");
-                    System.out.println("4. Salir");
                     System.out.print("Tu elección: ");
                     break;
                 case 3: 
                     System.out.println("1. Reiniciar Misión Final");
                     System.out.println("2. Guardar estado");
                     System.out.println("3. Cargar estado");
-                    System.out.println("4. Salir");
                     System.out.print("Tu elección: ");
                     break;
             }
@@ -64,9 +60,6 @@ public class Menu {
                     case 3:
                         cargarEstado();
                         break;
-                    case 4:
-                        System.out.println("¡Hasta luego!");
-                        return;
                     default:
                         System.out.println("Opción inválida.");
                         break;
@@ -79,9 +72,6 @@ public class Menu {
                     case 2:
                         cargarEstado();
                         break;
-                    case 3:
-                        System.out.println("¡Hasta luego!");
-                        return;
                     default:
                         System.out.println("Opción inválida.");
                         break;
